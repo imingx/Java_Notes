@@ -1,6 +1,6 @@
 # My Java Notes
 
-## 前言📣
+## Preface📣
 
 I create this repo to record my learning journey and for fun. The learning video is here[🦋](https://www.bilibili.com/video/BV1uJ411k7wy).  
 
