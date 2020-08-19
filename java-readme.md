@@ -435,7 +435,7 @@ public static int sum (int a, int b){
 
 ### 5. 方法重载 overload
 
-``` 
+```java
 多个方法的名称相同，但是参数列表不一样
 public static int sum(int a, int b){}
 public static int sum(int a, int b, int c){}
@@ -1936,6 +1936,7 @@ public static void giveMeAnAnimal(Animal animal){
 
 #### 成员内部类
 
+成员内部类，直接定义在另一个类内的类。
 ```java
 格式：
 修饰符 class 外部类名称{
@@ -1947,3 +1948,100 @@ public static void giveMeAnAnimal(Animal animal){
 ```
 
 <!-- 2020-08-16，星期日，学习至P202,很烦，妹妹在家闹呢 -->
+
+```java
+public class Body{
+	public class Heart{
+		public void beat(){
+			System.out.println("123");
+		}
+	}
+	public void show(){
+		new Heart().beat();
+	}
+}
+编译后，在该项目下的`./out/production`文件夹与`.java`对应位置的地方会产生`.class`文件。
+此时产生的文件有 `Body.class` & `Body$Heart.class`，
+`$`表示Heart类是Body类的内部类
+```
+
+**成员内部类的使用**
+1. 间接方式：在外部类的方法当中，使用内部类，然后在另一个类的main方法只是调用该外部类的方法。（注意，此时的外部类和内部类，没有main方法，只是当做自定义类）
+	```java
+	public class Body{
+		public class Heart{
+			public void beat(){
+				System.out.println("123");
+			}
+		}
+		public void show(){
+			new Heart().beat();
+		}
+	}
+
+	public class Demo{
+		public static void main(String[] args){
+			Body body = new Body();
+			body.show();
+		}
+	}
+	```
+2. 直接方式：公式：外部类名称.内部类名称 对象名 = new 外部类名称().new 内部类名称();
+	```java
+	public class Demo{
+		public static void main(String[] args){
+			Body.Heart heart = new Body().new Heart();
+			heart.beat();
+		}
+	}
+	```
+
+**内部类的同名变量访问**
+
+如果变量重名的话，内部类内的方法内，定义的局部变量，直接用变量名字访问；内部类的成员变量，用`this.变量名`访问；外部类的成员变量，用`外部类名.this.变量名`访问。
+```java
+public class Outer{
+	int num = 10;//外部类的成员变量
+	public class Inner{
+		int num = 20;//内部类的成员变量
+		public void method(){
+			int num = 30;//内部类方法的局部变量
+			num               //30 局部变量
+			this.num          //20 内部类的成员变量
+			Outer.this.num    //10 外部类的成员变量
+		}
+	}
+}
+```
+
+#### 局部内部类
+
+一个类是定义在一个方法内部，那么就是一个局部内部类，只能在所属的方法才可以使用它。
+```java
+public class Outer{
+	public void methodOuter(){
+		class Inner{ //不加public关键字修饰
+			int num = 10;
+			public void methodInner(){
+
+			}
+		} 
+		Inner inner = new Inner();//只能这样访问
+		inner.methodInner();
+	}
+}
+```
+
+### 权限修饰符修饰类
+
+1. 外部类，可写 public/(default)
+   1. 因为外部类的上一级是包，所以外部类的作用域有两个，同一个包或者不同包，`public`修饰符表示所有包下的类都可以访问；`(default)`修饰符表示仅在同一个包下的类可以访问。访问指的是可以`import`，即在其他的类中写导包语句和创建对象。(default)修饰外部类，其他包的类内连导包语句都没法写。
+2. 成员内部类，可写 public/protected/(default)/private
+3. 局部内部类，什么都不写，功能和（default）不同
+
+成员内部类的不同权限修饰符的作用如下（类似成员变量）：
+
+1. private: Java语言中对访问权限限制的最窄的修饰符，一般称之为“私有的”。被其修饰的类、属性以及方法只能被该类的对象访问，其子类不能访问，更不能允许跨包访问。
+2. default：即不加任何访问修饰符，通常称为“默认访问模式“。该模式下，只允许在同一个包中进行访问。
+3. protect: 介于public 和 private 之间的一种访问修饰符，一般称之为“保护形”。被其修饰的类、属性以及方法只能被类本身的方法及子类访问，即使子类在不同的包中也可以访问。
+4. public： Java语言中访问限制最宽的修饰符，一般称之为“公共的”。被其修饰的类、属性以及方法不仅可以跨类访问，而且允许跨包（package）访问。
