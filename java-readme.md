@@ -1696,12 +1696,14 @@ public interface 接口名称{
 	注意：
 	1. 接口的默认方法，可以通过接口实现类对象直接调用
 	2. 接口的默认方法，也可以被实现类覆盖重写，但不是必要的。
+	3. `public`可省略
 
 3. 接口的静态方法定义
 	```
 	java8 开始，接口允许定义静态方法。
 	public static 返回值类型 方法名称(参数列表){
 		方法体
+		//public 可以省略
 	}
 
 	通过接口名称直接访问
@@ -2032,7 +2034,82 @@ public class Outer{
 }
 ```
 
-### 权限修饰符修饰类
+**局部内部类的final问题**
+
+局部内部类，如果想要访问所在方法的局部变量，那么这个局部变量必须是【有效final的】。
+
+备注:从java8+开始，只要局部变量事实不变，那么final关键字可以省略。即，必须加final关键字修饰该方法的局部变量；如果不加final关键字，则必须保证方法的局部变量是只被赋值一次，不再改变。
+
+```java
+public class Outer{
+	public void method(){
+		int num = 10;
+		class Inner{
+			public void methodInner(){
+				System.out.println(num);
+			}
+		}
+	}
+}
+```
+
+原因：
+1. new出来的对象在堆内存中
+2. 局部变量是跟着方法走的，在栈内存当中
+3. 方法运行结束之后，立刻出栈，局部变量就会立刻消失
+4. 但是new出来的对象会在堆内存当中持续存在，直到垃圾回收消失。
+5. 所以当局部变量消失的时候，会在常量区创建该局部变量的副本，供堆区的对象使用。
+
+#### 局部内部类的匿名内部类
+
+如果接口的实现类（或者是父类的子类）只需要使用唯一的一次。
+那么这种情况下就可以省略掉该类的定义，而改为使用【匿名内部类】
+
+匿名内部类的定义格式
+```java
+//这样相当于多态，接口对象的引用指向了实现类的对象。
+//接口名称 对象名 = new 实现类名称();
+接口名称 对象名 = new 接口名称(){
+	//覆盖重写所有抽象方法
+};
+//是不是也可以推广到抽象类和普通父类,经查阅，是可以的
+父类/抽象类 对象名 = new 子类/实现类(){
+	//可以覆盖重写父类/抽象类的相关方法。
+};
+
+pubic class Demo{
+	public static void main(String[] args){
+		MyInterface obj = new MyInterace(){
+			@Override
+			public void method(){
+
+			}
+		};
+		obj.method();//运行的是覆盖重写后的方法。
+	} 
+}
+```
+**注意事项**
+1. 对格式进行解析“new 接口名称(){……}”
+   1. new代表创建对象的动作
+   2. 接口名称就是匿名内部类需要实现哪个接口。
+   3. {...}这才是匿名内部类的内容。
+2. 匿名内部类，在创建对象的时候，只能使用唯一一次。如果希望多次创建对象，而且内容一样的话，必须定义实现类。
+3. 用匿名内部类创建匿名对象，并运行方法,注意分号。
+	```java
+	pubic class Demo{
+		public static void main(String[] args){
+			new MyInterface(){
+				@Override
+				public void method(){
+
+				}
+			}.method();
+		} 
+	}
+	```
+
+### 类的权限修饰符
 
 1. 外部类，可写 public/(default)
    1. 因为外部类的上一级是包，所以外部类的作用域有两个，同一个包或者不同包，`public`修饰符表示所有包下的类都可以访问；`(default)`修饰符表示仅在同一个包下的类可以访问。访问指的是可以`import`，即在其他的类中写导包语句和创建对象。(default)修饰外部类，其他包的类内连导包语句都没法写。
@@ -2045,3 +2122,92 @@ public class Outer{
 2. default：即不加任何访问修饰符，通常称为“默认访问模式“。该模式下，只允许在同一个包中进行访问。
 3. protect: 介于public 和 private 之间的一种访问修饰符，一般称之为“保护形”。被其修饰的类、属性以及方法只能被类本身的方法及子类访问，即使子类在不同的包中也可以访问。
 4. public： Java语言中访问限制最宽的修饰符，一般称之为“公共的”。被其修饰的类、属性以及方法不仅可以跨类访问，而且允许跨包（package）访问。
+
+### 其他成员变量类型
+
+#### 类作为成员变量类型
+
+```java
+public class Weapon{
+	String name;
+	public Weapon(){};
+	public Weapon(String name){
+		this.name = name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+	public String getName(){
+		return name;
+	}
+}
+
+public class Hero{
+	Weapon weapon;
+	public Hero(){
+	}
+	public Hero(Weapon weapon){
+		this.weapon = weapon;
+	}
+	public void setWeapon(Weapon weapon){
+		this.weapon = weapon;
+	}
+	public Weapon getWeapon(){
+		return weapon;
+	}
+}
+
+public class Demo{
+	public static void main(String[] args){
+		Hero hero = new Hero(new Weapon("多兰剑"));
+	}
+}
+```
+
+#### 接口作为成员变量类型
+
+```java
+public interface Skill{
+	void use();
+	//抽象方法，接口的抽象方法可以省略`public abstract`
+}
+
+public class InterfaceImpl implements Skill{
+	@Override
+	void use(){
+
+	}
+}
+
+public class Hero{
+	Skill skill;//英雄的技能
+	public Hero(){}
+	public Hero(Skill skill){
+		this.skill = skill;
+	}
+}
+
+public class Demo{
+	public static void main(String[] args){
+		//使用单独定义的实现类
+		Hero hero= new Hero(new InterfaceImpl());
+		hero.skill.use();
+
+		//使用匿名内部类
+		Skill skill = new Skill(){
+			@Override
+			public void use(){
+			}	
+		};
+		Hero hero = new Hero(skill);
+
+		//使用匿名内部类及匿名对象
+		Hero hero = new Hero(new Skill(){
+			@Override
+			public void use(){
+
+			}
+		});
+	}
+}
+```
