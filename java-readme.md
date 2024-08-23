@@ -21,7 +21,7 @@
 - [十九、内部类](#十九内部类)
 
 ## IDEA的使用
-![image-20200807004404269](https://tva1.sinaimg.cn/large/007S8ZIlly1ghhkk09a5gj318u0u0jwb.jpg)
+![image-20200807004404269](https://gitlab.com/imingx/picgo/-/raw/main/2024/202408232054611.jpg)
 
 ```
 IDEA的使用
@@ -109,7 +109,7 @@ ctrl+k 删除光标后的内容    ctrl+a 光标定位到行首
 
 关系
 
-![image-20200806160949960](https://tva1.sinaimg.cn/large/007S8ZIlly1ghh5oz4eidj30ks0baabm.jpg)
+![image-20200806160949960](https://gitlab.com/imingx/picgo/-/raw/main/2024/202408232054174.jpg)
 
 ## 二、入门程序
 
@@ -670,7 +670,7 @@ Java的内存需要划分成为5个部分
 
 ### 数组的内存图
 
-![1](https://tva1.sinaimg.cn/large/007S8ZIlly1ghibpo2ycpj319u0jmql2.jpg)
+![1](https://gitlab.com/imingx/picgo/-/raw/main/2024/202408232055348.jpg)
 
 
 
@@ -872,7 +872,7 @@ name = "你的名字";
 
 ### 对象的内存图
 
-![image-20200809003822402](https://tva1.sinaimg.cn/large/007S8ZIlly1ghjvmr7268j319g0imh8t.jpg)
+![image-20200809003822402](https://gitlab.com/imingx/picgo/-/raw/main/2024/202408232055547.jpg)
 
 ```
 对象存储的实际是一个地址值，通过这个地址访问堆区的内容。
@@ -1276,7 +1276,7 @@ new的不在池当中
 
 字符串常量池在堆中
 
-![image-20200809191747040](https://tva1.sinaimg.cn/large/007S8ZIlly1ghkrzhk07zj317y0i27g3.jpg)
+![image-20200809191747040](https://gitlab.com/imingx/picgo/-/raw/main/2024/202408232056381.jpg)
 
 ```
 new出来的字符串对象，和常量池中的字符串对象，存储的都是地址，地址指向堆区的byte[]型数组，
@@ -1396,7 +1396,7 @@ Person.method();
 4. 静态方法中不能使用this关键字，因为调用时，对象被转换成为了类名称，this是存储该对象存储的地址的，所以不行。
 
 内存图
-![](https://tva1.sinaimg.cn/large/007S8ZIlly1ghliphyjesj319k0ic7mf.jpg)
+![](https://gitlab.com/imingx/picgo/-/raw/main/2024/202408232056188.jpg)
 
 静态代码块
 ```
@@ -1594,7 +1594,7 @@ public class Zi extends Fu{
 	}
 }
 ```
-![](https://tva1.sinaimg.cn/large/007S8ZIlly1ghmn8bzvcuj31mo0u07wh.jpg)
+![](https://gitlab.com/imingx/picgo/-/raw/main/2024/202408232056259.jpg)
 
 ### 抽象方法
 ```
